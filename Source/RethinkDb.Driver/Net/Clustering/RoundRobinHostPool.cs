@@ -144,6 +144,21 @@ namespace RethinkDb.Driver.Net.Clustering
                 throw;
             }
         }
+
+        public override async Task<Response> RunUnsafeAsync(ReqlAst term, object globalOpts, CancellationToken cancelToken)
+        {
+            HostEntry host = GetRoundRobin();
+            try
+            {
+                return await host.conn.RunUnsafeAsync(term, globalOpts, cancelToken).ConfigureAwait(false);
+            }
+            catch (Exception e) when (ExceptionIs.NetworkError(e))
+            {
+                host.MarkFailed();
+                throw;
+            }
+        }
+
         #endregion
 
         public override void Dispose()

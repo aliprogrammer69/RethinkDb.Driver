@@ -35,8 +35,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RethinkDb.Driver.Linq.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{D37FE226-75BA-4265-8D39-7B64594C42E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{36EE9148-F5B9-487F-AD22-CCB72EF47692}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,10 +81,6 @@ Global
 		{D37FE226-75BA-4265-8D39-7B64594C42E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D37FE226-75BA-4265-8D39-7B64594C42E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D37FE226-75BA-4265-8D39-7B64594C42E6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36EE9148-F5B9-487F-AD22-CCB72EF47692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36EE9148-F5B9-487F-AD22-CCB72EF47692}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36EE9148-F5B9-487F-AD22-CCB72EF47692}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36EE9148-F5B9-487F-AD22-CCB72EF47692}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -301,13 +302,41 @@ namespace RethinkDb.Driver.Ast
         #region EXTRA RUN HELPERS
 
         /// <summary>
+        /// OBSOLETE: Please use the .RunWriteAsync() method instead.
+        /// </summary>
+        [Obsolete("The .RunResultAsync() method has been renamed to .RunWriteAsync(). Please use the new method name instead.", error: false)]
+        public virtual Task<Result> RunResultAsync(IConnection conn, object runOpts = null, CancellationToken cancelToken = default)
+        {
+            return RunWriteAsync(conn, runOpts, cancelToken);
+        }
+
+        /// <summary>
+        /// OBSOLETE: Please use .RunWriteAsync() method instead.
+        /// </summary>
+        [Obsolete("The .RunResultAsync() method has been renamed to .RunWriteAsync(). Please use the new method name instead.", error: false)]
+        public virtual Task<Result> RunResultAsync(IConnection conn, CancellationToken cancelToken)
+        {
+            return RunWriteAsync(conn, null, cancelToken);
+        }
+
+        /// <summary>
+        /// OBSOLETE: Please use .RunWrite() method instead.
+        /// </summary>
+        [Obsolete("The .RunResult() method has been renamed to .RunWrite(). Please use the new method name instead.", error: false)]
+        public virtual Result RunResult(IConnection conn, object runOpts = null)
+        {
+            return RunWriteAsync(conn, runOpts).WaitSync();
+        }
+
+
+        /// <summary>
         /// Helper shortcut for DML type of queries that returns # of inserts, deletes, errors.
         /// This method bypasses the dynamic language runtime for extra performance.
         /// </summary>
         /// <param name="conn">connection</param>
         /// <param name="runOpts">global anonymous type optional arguments</param>
         /// <param name="cancelToken">Cancellation token used to stop *waiting* for a query response. The cancellation token does not cancel the query's execution on the server.</param>
-        public virtual Task<Result> RunResultAsync(IConnection conn, object runOpts = null, CancellationToken cancelToken = default)
+        public virtual Task<Result> RunWriteAsync(IConnection conn, object runOpts = null, CancellationToken cancelToken = default)
         {
             return conn.RunAtomAsync<Result>(this, runOpts, cancelToken);
         }
@@ -318,9 +347,9 @@ namespace RethinkDb.Driver.Ast
         /// </summary>
         /// <param name="conn">connection</param>
         /// <param name="cancelToken">Cancellation token used to stop *waiting* for a query response. The cancellation token does not cancel the query's execution on the server.</param>
-        public virtual Task<Result> RunResultAsync(IConnection conn, CancellationToken cancelToken)
+        public virtual Task<Result> RunWriteAsync(IConnection conn, CancellationToken cancelToken)
         {
-            return RunResultAsync(conn, null, cancelToken);
+            return RunWriteAsync(conn, null, cancelToken);
         }
 
         /// <summary>
@@ -329,10 +358,28 @@ namespace RethinkDb.Driver.Ast
         /// </summary>
         /// <param name="conn">connection</param>
         /// <param name="runOpts">global anonymous type optional arguments</param>
-        public virtual Result RunResult(IConnection conn, object runOpts = null)
+        public virtual Result RunWrite(IConnection conn, object runOpts = null)
         {
-            return RunResultAsync(conn, runOpts).WaitSync();
+            return RunWriteAsync(conn, runOpts).WaitSync();
         }
+
+
+
+        /// <summary>
+        /// Runs a query on the server and returns the raw <see cref="Response"/> object in an unsafe way
+        /// with minimal client-side processing. The unbridled use of this method can
+        /// lead to memory leaks on both the client and server. This method should only
+        /// be used in well-understood and advanced scenarios.
+        /// </summary>
+        /// <param name="conn">The connection object</param>
+        /// <param name="runOpts">global anonymous type optional arguments</param>
+        /// <param name="cancelToken">Cancellation token used to stop *waiting* for a query response. The cancellation token does not cancel the query's execution on the server.</param>
+        public virtual Task<Response> RunUnsafeAsync(IConnection conn, object runOpts = null, CancellationToken cancelToken = default)
+        {
+            return conn.RunUnsafeAsync(this, runOpts, cancelToken);
+        }
+
+
 
         /// <summary>
         /// Helper shortcut for change feeds, use if your query is expecting an infinite changes() stream.

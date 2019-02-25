@@ -1,3 +1,8 @@
+## v2.3.100
+* First batch of expired commercial licenses have been banned for use.
+* Issue #139 - New `.RunUnsafeAsync` run helper that runs a query on the server and returns the raw `Response` object in an unsafe way with minimal client-side processing. The unbridled use of this method can lead to memory leaks on both the client and server. Use with extreme caution. This method should only be used in well-understood and advanced scenarios.
+* **POSSIBLE BREAKING CHANGE:** `.RunResult` for `Result` (DML) type responses that correspond to inserts, deletes, updates has been renamed to `.RunWrite`. Please use the new method name instead. **Note:** The `.RunResult<T>` for `T` type responses will not be obsoleted. The reason for the former `.RunResult` method rename is to avoid confusion between `.RunResult` and `.RunResult<T>`. The obsoleted methods produce compiler warnings in this version. If no compiler warnings are produced, no changes are necessary. The obsolete methods will be removed in the next major RethinkDB driver release (2.4).
+
 ## v2.3.24
 * Issue #138 - Better error handling in cursors.
 * **POSSIBLE BREAKING CHANGE:** Previously, when an error response was received during cursor enumeration a `NotSupportedException` was thrown. Issue #138 changes this behavior by throwing more detailed (and more specific) exception based on the response from the server. For example, the driver will throw a `ReqlOpFailedError` exception if a cursor change feed is interrupted behind a RethinkDB proxy instead of throwing a generic `NotSupportedException`. 
